@@ -80,3 +80,52 @@ public class ToyServlet extends HttpServlet {
         }
         return toys;
     }
+    // Nimesh — Delete toy (Delete)
+    private void deleteToy(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        List<Toy> toys = getAllToys();
+
+        toys.removeIf(toy -> toy.getId() == id);
+        saveAllToys(toys);
+
+        response.sendRedirect("toy-servlet");
+    }
+
+    //  Nimesh — Update toy (Update)
+    private void updateToy(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String idStr = request.getParameter("id");
+
+        if (idStr == null || idStr.trim().isEmpty()) {
+            response.sendRedirect("toy-servlet?error=Invalid ID");
+            return;
+        }
+
+        int id = Integer.parseInt(idStr);
+        String name = request.getParameter("name");
+        double price = Double.parseDouble(request.getParameter("price"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+        List<Toy> toys = getAllToys();
+        for (Toy toy : toys) {
+            if (toy.getId() == id) {
+                toy.setName(name);
+                toy.setPrice(price);
+                toy.setQuantity(quantity);
+                break;
+            }
+        }
+        saveAllToys(toys);
+
+        response.sendRedirect("toy-servlet");
+    }
+
+    // Nimesh — Save all toys (used for update and delete)
+    private void saveAllToys(List<Toy> toys) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            for (Toy toy : toys) {
+                writer.write(toy.toString());
+                writer.newLine();
+            }
+        }
+    }
+}
