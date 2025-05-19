@@ -1,0 +1,6 @@
+2,LEGO Set,55.99,9
+3,Dinosaur Toy,29.99,97
+4,Remote Control Car,24.99,100
+5,Board Game,15.99,99
+6,BuZZ Light,1000.0,100
+7,Cube,4.0,100
